@@ -1,18 +1,26 @@
 import psycopg2
+import telethon
 import datetime
-from telethon import TelegramClient, events, sync  # импортируем библиотеки
+import logging
+from telethon import TelegramClient, events, sync, connection  # импортируем библиотеки
+from telethon.crypto import AuthKey
 from pars_conf import account, list_all  # импортируем данные из файл конфигурации
 from telethon.tl.functions.messages import GetHistoryRequest
+
 api_id = account[0]  # задаем API
 api_hash = account[1]  #задаем HASH
-client = TelegramClient('my_account', api_id, api_hash)  # собираем клиента
+proxy_server = ('http', '172.16.148.70', 8080) #подключение к techno-proxy
+# connection = telethon.connection.ConnectionTcpMTProxyRandomizedIntermediate
 
+client = TelegramClient('my_account', api_id, api_hash, proxy=proxy_server)  # собираем клиента
+
+r = logging.basicConfig(level=logging.DEBUG)
 conn = psycopg2.connect(
-            host = 'localhost',
+            host = '10.4.96.3',
             user = 'postgres',
-            password = 'postgres',  # your password
-            port = '5432',
-            dbname = 'postgres')
+            password = 'daim123DAIM',  # пароль
+            dbname = 'News_mon')
+print(r)
 cursor = conn.cursor()
 client.start()
 n=0
